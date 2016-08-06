@@ -122,7 +122,48 @@ public abstract class Graph {
 	 */
 	public List<Integer> degreeSequence() {
 		// XXX: Implement in part 1 of week 1
-		return null;
+		HashMap<Integer,ArrayList<Integer>> degreeUnSort = new HashMap<Integer,ArrayList<Integer>>();
+		List<Integer> degreeList = new ArrayList<Integer>(); 
+		for (int i = 0; i < numVertices; i++) {
+			//System.out.println("for I=" + i + " neighborsOut " + getNeighbors(i) + ": neighborsIn " + getInNeighbors(i));
+			ArrayList<Integer> currNeighbors = new ArrayList<Integer>();
+			currNeighbors.add(i);//First value (number of vertex)
+			currNeighbors.add(getNeighbors(i).size() + getInNeighbors(i).size());//Second value (amount of edges)
+
+			degreeUnSort.put(i, currNeighbors); //put(K key, V value)
+		}
+		//System.out.println("degreeUnSort out " + degreeUnSort);
+		
+		degreeUnSort = sortMapByDegree(degreeUnSort);
+		
+		//System.out.println("degreeSort out " + degreeUnSort);
+		for (int i = 0; i < degreeUnSort.size(); i++) {
+			degreeList.add(degreeUnSort.get(i).get(1));
+		}
+		//System.out.println("degreeSort out " + degreeList);
+		return degreeList;
+	}
+	
+	private HashMap<Integer,ArrayList<Integer>> sortMapByDegree (HashMap<Integer,ArrayList<Integer>> localHashMap) {
+		int currInd;
+		for (int i = 1; i < localHashMap.size(); i++) {
+			currInd = i;
+			while (currInd > 0 && localHashMap.get(currInd).get(1) > localHashMap.get(currInd - 1).get(1) ) {
+				swap(localHashMap, currInd, currInd -1 );
+				currInd --;
+			}
+		}
+		//System.out.println(localHashMap);
+		return localHashMap;
+	}
+	
+	private void swap (HashMap<Integer,ArrayList<Integer>> HashMapForSwap, int currInd, int currIndDecrm) {
+		ArrayList<Integer> temp = new ArrayList<Integer>();
+		temp = HashMapForSwap.get(currIndDecrm);
+		HashMapForSwap.put(currIndDecrm, HashMapForSwap.get(currInd));
+		HashMapForSwap.put(currInd, temp);
+		//System.out.println("currInd " + currInd + ";currIndDecrm " + currIndDecrm);
+		
 	}
 	
 	/**
@@ -241,6 +282,7 @@ public abstract class Graph {
 		System.out.println("****");
 		System.out.println("Roads / intersections:");
 		GraphAdjList graphFromFile = new GraphAdjList();
+		//GraphAdjMatrix graphFromFile = new GraphAdjMatrix();
 		GraphLoader.loadRoadMap("data/testdata/simpletest.map", graphFromFile);
 		System.out.println(graphFromFile);
 		
@@ -248,9 +290,17 @@ public abstract class Graph {
 		System.out.println("****");
 
 		System.out.println("\n****");
+		/*
+		System.out.println("Testing distance-two methods on sample graphs...");
+		for (int i = 0; i < graphFromFile.getNumVertices(); i++) {
+			System.out.println(graphFromFile.getDistance2(i));
+		}
+		*/
+		
 		
 		// You can test with real road data here.  Use the data files in data/maps
 		
+/*		
 		System.out.println("Flight data:");
 		GraphAdjList airportGraph = new GraphAdjList();
 		GraphLoader.loadRoutes("data/airports/routesUA.dat", airportGraph);
@@ -262,8 +312,8 @@ public abstract class Graph {
 		// Test your distance2 code here.
 		System.out.println("Testing distance-two methods on sample graphs...");
 		System.out.println("Goal: implement method using two approaches.");
-
-
+		
+*/
 		
 	}
 }

@@ -77,11 +77,13 @@ public class GraphGrader {
         // Load the graph, get the user's answer, and compare with right answer
         GraphLoader.loadGraph("data/graders/mod1/graph" + i + ".txt", lst);
         List<Integer> result = lst.getDistance2(start);
+        //System.out.println("result " + result);
         judge(result, corr);
  
         feedback += appendFeedback(i * 2, "Testing adjacency matrix");
         GraphLoader.loadGraph("data/graders/mod1/graph" + i + ".txt", mat);
         result = mat.getDistance2(start);
+        //System.out.println("result " + result);
         judge(result, corr);
     }
 
@@ -177,7 +179,9 @@ public class GraphGrader {
             correctAns.add(6);
             correctAns.add(6);
             correctAns.add(8);
+            //System.out.println("correctAns " + correctAns);
             runTest(2, "Undirected straight line (0<->1<->2<->3<->...)", 6, correctAns);
+
 
             correctAns = new ArrayList<Integer>();
             for (int i = 0; i < 9; i++) {
