@@ -144,6 +144,7 @@ public abstract class Graph {
 		return degreeList;
 	}
 	
+	//Insertion sort implement
 	private HashMap<Integer,ArrayList<Integer>> sortMapByDegree (HashMap<Integer,ArrayList<Integer>> localHashMap) {
 		int currInd;
 		for (int i = 1; i < localHashMap.size(); i++) {
@@ -157,6 +158,7 @@ public abstract class Graph {
 		return localHashMap;
 	}
 	
+	//Swap for insertion sort algorithm
 	private void swap (HashMap<Integer,ArrayList<Integer>> HashMapForSwap, int currInd, int currIndDecrm) {
 		ArrayList<Integer> temp = new ArrayList<Integer>();
 		temp = HashMapForSwap.get(currIndDecrm);

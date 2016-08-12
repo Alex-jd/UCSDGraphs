@@ -236,15 +236,22 @@ public class Maze {
 			return new ArrayList<MazeNode>();
 		}
 		// reconstruct the path
-		LinkedList<MazeNode> path = new LinkedList<MazeNode>();
-		MazeNode curr = goal;
-		while (curr != start) {
-			path.addFirst(curr);
-			curr = parentMap.get(curr);
-		}
-		path.addFirst(start);
-		return path;
+		
+		return constructPath(start, goal, parentMap);
+		//return path;
 	}
+	
+	/*
+	LinkedList<MazeNode> path = new LinkedList<MazeNode>();
+	MazeNode curr = goal;
+	while (curr != start) {
+		path.addFirst(curr);
+		curr = parentMap.get(curr);
+	}
+	path.addFirst(start);
+	*/
+	
+	
 
 /*	public List<MazeNode> dfsRefactored(int startRow, int startCol, 
 										int endRow, int endCol) {
