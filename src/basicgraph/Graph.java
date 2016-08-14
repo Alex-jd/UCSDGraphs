@@ -302,7 +302,7 @@ public abstract class Graph {
 		
 		// You can test with real road data here.  Use the data files in data/maps
 		
-/*		
+	
 		System.out.println("Flight data:");
 		GraphAdjList airportGraph = new GraphAdjList();
 		GraphLoader.loadRoutes("data/airports/routesUA.dat", airportGraph);
@@ -315,7 +315,7 @@ public abstract class Graph {
 		System.out.println("Testing distance-two methods on sample graphs...");
 		System.out.println("Goal: implement method using two approaches.");
 		
-*/
+
 		
 	}
 }
