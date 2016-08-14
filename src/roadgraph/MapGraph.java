@@ -8,6 +8,9 @@
 package roadgraph;
 
 
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 import java.util.function.Consumer;
@@ -24,6 +27,8 @@ import util.GraphLoader;
  */
 public class MapGraph {
 	//TODO: Add your member variables here in WEEK 2
+	List <MapNode> verticies;
+	HashMap <GeographicPoint, MapNode> correspPointNode;
 	
 	
 	/** 
@@ -32,6 +37,8 @@ public class MapGraph {
 	public MapGraph()
 	{
 		// TODO: Implement in this constructor in WEEK 2
+		this.verticies = new ArrayList<MapNode>();
+		this.correspPointNode = new HashMap<GeographicPoint, MapNode>();
 	}
 	
 	/**
@@ -51,7 +58,11 @@ public class MapGraph {
 	public Set<GeographicPoint> getVertices()
 	{
 		//TODO: Implement this method in WEEK 2
-		return null;
+		Set<GeographicPoint> setPoints = new HashSet<GeographicPoint>();
+		for (MapNode gPoint : verticies) {
+			setPoints.add(gPoint.getCurrLocation());
+		}
+		return setPoints;
 	}
 	
 	/**
@@ -76,6 +87,13 @@ public class MapGraph {
 	public boolean addVertex(GeographicPoint location)
 	{
 		// TODO: Implement this method in WEEK 2
+		MapNode vertex = new MapNode(location);
+		if (!correspPointNode.containsKey(location) && location != null) {
+			verticies.add(vertex);
+			correspPointNode.put(location, vertex);
+			return true;
+		}
+				
 		return false;
 	}
 	
@@ -205,6 +223,7 @@ public class MapGraph {
 		MapGraph firstMap = new MapGraph();
 		System.out.print("DONE. \nLoading the map...");
 		GraphLoader.loadRoadMap("data/testdata/simpletest.map", firstMap);
+		System.out.println(firstMap.getVertices());
 		System.out.println("DONE.");
 		
 		// You can use this method for testing.  
