@@ -343,6 +343,7 @@ public class GraphLoader
 						findPointsOnEdge(pointMap, info, nodes);
 				GeographicPoint end = pointsOnEdge.remove(pointsOnEdge.size()-1);
 				double length = getRoadLength(pt, end, pointsOnEdge);
+				//System.out.println(pt + " " + end + " " + info.roadName + " " + info.roadType);
 				map.addEdge(pt, end, info.roadName, info.roadType, length);
 
 				// If the segments variable is not null, then we 

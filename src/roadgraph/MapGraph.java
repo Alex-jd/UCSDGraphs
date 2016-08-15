@@ -48,7 +48,7 @@ public class MapGraph {
 	public int getNumVertices()
 	{
 		//TODO: Implement this method in WEEK 2
-		return 0;
+		return verticies.size();
 	}
 	
 	/**
@@ -72,7 +72,11 @@ public class MapGraph {
 	public int getNumEdges()
 	{
 		//TODO: Implement this method in WEEK 2
-		return 0;
+		int numEdges = 0;
+		for (MapNode gPoint : verticies) {
+			numEdges += gPoint.getEdges().size();
+		}
+		return numEdges;
 	}
 
 	
@@ -113,6 +117,9 @@ public class MapGraph {
 			String roadType, double length) throws IllegalArgumentException {
 
 		//TODO: Implement this method in WEEK 2
+		MapNode tempNode = correspPointNode.get(from);
+		tempNode.addEdge(from, to, roadName, roadType, length);
+		
 		
 	}
 	
@@ -224,6 +231,12 @@ public class MapGraph {
 		System.out.print("DONE. \nLoading the map...");
 		GraphLoader.loadRoadMap("data/testdata/simpletest.map", firstMap);
 		System.out.println(firstMap.getVertices());
+		for (MapNode temp : firstMap.verticies) {
+			System.out.println(temp.getEdges() );
+		}
+		//System.out.println( getNumVertices().toString() );
+		//int temp = getNumEdges();
+		//System.out.println(getNumEdges());
 		System.out.println("DONE.");
 		
 		// You can use this method for testing.  
@@ -233,6 +246,7 @@ public class MapGraph {
 		 * the Week 3 End of Week Quiz, EVEN IF you score 100% on the 
 		 * programming assignment.
 		 */
+		
 		/*
 		MapGraph simpleTestMap = new MapGraph();
 		GraphLoader.loadRoadMap("data/testdata/simpletest.map", simpleTestMap);
@@ -263,6 +277,7 @@ public class MapGraph {
 		testroute = testMap.dijkstra(testStart,testEnd);
 		testroute2 = testMap.aStarSearch(testStart,testEnd);
 		*/
+		
 		
 		
 		/* Use this code in Week 3 End of Week Quiz */
