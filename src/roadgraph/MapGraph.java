@@ -11,7 +11,9 @@ package roadgraph;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.LinkedList;
 import java.util.List;
+import java.util.Queue;
 import java.util.Set;
 import java.util.function.Consumer;
 
@@ -149,6 +151,29 @@ public class MapGraph {
 			 					     GeographicPoint goal, Consumer<GeographicPoint> nodeSearched)
 	{
 		// TODO: Implement this method in WEEK 2
+		List<GeographicPoint> bfsOut = new ArrayList<GeographicPoint>();
+		Set<GeographicPoint> visited = new HashSet<GeographicPoint>();
+		Queue<GeographicPoint> q = new LinkedList<GeographicPoint>();
+		GeographicPoint curr = start;
+		
+		visited.add(curr);
+		q.add(curr);
+		
+		while (!q.isEmpty() ) {
+			curr = q.remove();
+			if (curr.equals(goal) ) {
+				return bfsOut;
+			}
+			//correspPointNode.get(curr).getEdgesList();//get EdgesList of current MapNode
+			for (MapEdge currEdge : correspPointNode.get(curr).getEdgesList() ) {
+				if (!visited.contains(currEdge.getEnd()) ) {
+					visited.add(currEdge.getEnd());
+					q.add(currEdge.getEnd());
+				}
+			}
+		}
+		
+		
 		
 		// Hook for visualization.  See writeup.
 		//nodeSearched.accept(next.getLocation());

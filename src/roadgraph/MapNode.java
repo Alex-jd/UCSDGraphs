@@ -30,11 +30,19 @@ public class MapNode {
 			String roadType, double length) {
 		
 		MapEdge currMapEdge = new MapEdge(from, to, roadName, roadType, length);
-		neighbors.add(currMapEdge);
+		
 		if (neighbors.contains(currMapEdge) ) {
+			return false;
+		}
+		else {
+			neighbors.add(currMapEdge);
 			return true;
 		}
-		return false;
+		
+	}
+	
+	public List<MapEdge> getEdgesList() {
+		return neighbors;
 	}
 	
 	public Set<MapEdge> getEdges() {

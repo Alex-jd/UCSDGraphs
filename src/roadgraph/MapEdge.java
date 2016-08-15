@@ -4,11 +4,11 @@ import geography.GeographicPoint;
 
 public class MapEdge {
 	
-	GeographicPoint start;
-	GeographicPoint end;
-	String streetName;
-	String roadType;
-	double distance;
+	private GeographicPoint start;
+	private GeographicPoint end;
+	private String streetName;
+	private String roadType;
+	private double distance;
 		
 	public MapEdge(GeographicPoint from, GeographicPoint to, String roadName,
 			String roadType, double length) {
