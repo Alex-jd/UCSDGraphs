@@ -155,6 +155,8 @@ public class MapGraph {
 		Set<GeographicPoint> visited = new HashSet<GeographicPoint>();
 		Queue<GeographicPoint> q = new LinkedList<GeographicPoint>();
 		GeographicPoint curr = start;
+		GeographicPoint currEnd;
+		MapNode currNode;
 		
 		visited.add(curr);
 		q.add(curr);
@@ -166,9 +168,12 @@ public class MapGraph {
 			}
 			//correspPointNode.get(curr).getEdgesList();//get EdgesList of current MapNode
 			for (MapEdge currEdge : correspPointNode.get(curr).getEdgesList() ) {
-				if (!visited.contains(currEdge.getEnd()) ) {
-					visited.add(currEdge.getEnd());
-					q.add(currEdge.getEnd());
+				currEnd = currEdge.getEnd();//get the end GeographicPoint of currEdge
+				if (!visited.contains(currEnd) ) {
+					currNode = correspPointNode.get(currEnd);//get the MapNode object correspond to the end GeographicPoint of currEdge
+					currNode.addPointToCurrPath(curr);//Add the parent MapNode to the Path list 
+					visited.add(currEnd);
+					q.add(currEnd);
 				}
 			}
 		}

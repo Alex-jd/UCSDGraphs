@@ -11,6 +11,7 @@ public class MapNode {
 	
 	private GeographicPoint currentLocation;
 	private List <MapEdge> neighbors;
+	private List<GeographicPoint> currPath;
 	
 	public MapNode() {
 		
@@ -19,6 +20,7 @@ public class MapNode {
 	public MapNode(GeographicPoint location) {
 		this.currentLocation = location;
 		neighbors = new ArrayList<MapEdge>();
+		currPath = new ArrayList<GeographicPoint>();
 	}
 	
 	
@@ -39,6 +41,18 @@ public class MapNode {
 			return true;
 		}
 		
+	}
+	
+	public List<GeographicPoint> getCurrPath() {
+		return currPath;
+	}
+	
+	public void setCurrPathNull() {
+		currPath = null;
+	}
+	
+	public void addPointToCurrPath(GeographicPoint point) {
+		currPath.add(point);
 	}
 	
 	public List<MapEdge> getEdgesList() {
