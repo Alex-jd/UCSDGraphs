@@ -2,6 +2,12 @@ package roadgraph;
 
 import geography.GeographicPoint;
 
+//class of Edge contains the
+// start GeographicPoint
+// end GeographicPoint
+// street/road Name
+// roadType
+// distance 
 public class MapEdge {
 	
 	private GeographicPoint start;
@@ -10,6 +16,7 @@ public class MapEdge {
 	private String roadType;
 	private double distance;
 		
+	//Create the object particular start and end Point, and another info
 	public MapEdge(GeographicPoint from, GeographicPoint to, String roadName,
 			String roadType, double length) {
 		this.start = from;
@@ -19,6 +26,8 @@ public class MapEdge {
 		this.distance = length;
 		
 	}
+	
+	//The methods for getting the variables of this object
 	
 	public GeographicPoint getStart() {
 		return start;

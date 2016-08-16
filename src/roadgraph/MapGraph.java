@@ -29,8 +29,8 @@ import util.GraphLoader;
  */
 public class MapGraph {
 	//TODO: Add your member variables here in WEEK 2
-	List <MapNode> verticies;
-	HashMap <GeographicPoint, MapNode> correspPointNode;
+	List <MapNode> vertices; //The list of vertices (class MapNode)
+	HashMap <GeographicPoint, MapNode> correspPointNode; //corresponding HashMap GeographicPoint to MapNode
 	
 	
 	/** 
@@ -39,7 +39,7 @@ public class MapGraph {
 	public MapGraph()
 	{
 		// TODO: Implement in this constructor in WEEK 2
-		this.verticies = new ArrayList<MapNode>();
+		this.vertices = new ArrayList<MapNode>(); //Create the new ArrayList and HashMap
 		this.correspPointNode = new HashMap<GeographicPoint, MapNode>();
 	}
 	
@@ -50,7 +50,7 @@ public class MapGraph {
 	public int getNumVertices()
 	{
 		//TODO: Implement this method in WEEK 2
-		return verticies.size();
+		return vertices.size(); //return the size of Vertices List 
 	}
 	
 	/**
@@ -60,9 +60,10 @@ public class MapGraph {
 	public Set<GeographicPoint> getVertices()
 	{
 		//TODO: Implement this method in WEEK 2
-		Set<GeographicPoint> setPoints = new HashSet<GeographicPoint>();
-		for (MapNode gPoint : verticies) {
-			setPoints.add(gPoint.getCurrLocation());
+		//Create the set are containing the all vertices in the graph
+		Set<GeographicPoint> setPoints = new HashSet<GeographicPoint>(); //create the new HashSet
+		for (MapNode gPoint : vertices) {
+			setPoints.add(gPoint.getCurrLocation()); //by the loop get the MapNode object and get the CurrLocation. And add CurrLocation to the HashSet
 		}
 		return setPoints;
 	}
@@ -75,8 +76,8 @@ public class MapGraph {
 	{
 		//TODO: Implement this method in WEEK 2
 		int numEdges = 0;
-		for (MapNode gPoint : verticies) {
-			numEdges += gPoint.getEdges().size();
+		for (MapNode gPoint : vertices) {
+			numEdges += gPoint.getEdges().size(); //by the loop get the size of Edge HashSet of the each vertex. And summ those all.
 		}
 		return numEdges;
 	}
@@ -93,10 +94,10 @@ public class MapGraph {
 	public boolean addVertex(GeographicPoint location)
 	{
 		// TODO: Implement this method in WEEK 2
-		MapNode vertex = new MapNode(location);
-		if (!correspPointNode.containsKey(location) && location != null) {
-			verticies.add(vertex);
-			correspPointNode.put(location, vertex);
+		MapNode vertex = new MapNode(location); //Create the new MapNode object with particular location
+		if (!correspPointNode.containsKey(location) && location != null) { //Check if this vertex is at graph and location isn't null
+			vertices.add(vertex); //Add the new created object MapNode to the ArrayList
+			correspPointNode.put(location, vertex); //Add the new created object MapNode to the HashMap
 			return true;
 		}
 				
@@ -119,8 +120,8 @@ public class MapGraph {
 			String roadType, double length) throws IllegalArgumentException {
 
 		//TODO: Implement this method in WEEK 2
-		MapNode tempNode = correspPointNode.get(from);
-		tempNode.addEdge(from, to, roadName, roadType, length);
+		MapNode tempNode = correspPointNode.get(from); //Get the required object MapNode
+		tempNode.addEdge(from, to, roadName, roadType, length); //Call the method addEdge and pass to him the arguments
 		
 		
 	}
@@ -151,54 +152,52 @@ public class MapGraph {
 			 					     GeographicPoint goal, Consumer<GeographicPoint> nodeSearched)
 	{
 		// TODO: Implement this method in WEEK 2
-		List<GeographicPoint> bfsOut;
-		//Set<GeographicPoint> visited = new HashSet<GeographicPoint>();
-		//Queue<GeographicPoint> q = new LinkedList<GeographicPoint>();
+		List<GeographicPoint> bfsOut; //Create the variable bfsOUt (returned track List)
+		Set<MapNode> visited = new HashSet<MapNode>(); //Create the HashMap visited
+		Queue<MapNode> q = new LinkedList<MapNode>(); //Create the queue
+		MapNode curr = correspPointNode.get(start); //Get the object MapNode corresponded start GeorgaphicPoing
 		
-		Set<MapNode> visited = new HashSet<MapNode>();
-		Queue<MapNode> q = new LinkedList<MapNode>();
-		MapNode curr = correspPointNode.get(start);
-
-		GeographicPoint currEnd;
-		MapNode currNode;
+		GeographicPoint currEnd; //Create the variable kind of GeographicPoint 
+		MapNode currNode; //Create the variable kind of MapNode
 		
-		visited.add(curr);
-		q.add(curr);
-		int temp = 0;
+		visited.add(curr); //add to the visited set current MapNode
+		q.add(curr); //add to the queue current MapNode
 		
+		
+		//Implement the BFS algorithm
 		while (!q.isEmpty() ) {
-			curr = q.remove();
-			if (curr.getCurrLocation().equals(goal) ) {
-				bfsOut = new ArrayList<GeographicPoint>(curr.getCurrPath() );
-				//Set all PathLists to null
-				/*while (!q.isEmpty() ) {
+			curr = q.remove(); //dequeue the MapNode object from q
+			nodeSearched.accept(curr.getCurrLocation()); //feature for search visualization
+			if (curr.getCurrLocation().equals(goal) ) { //Check the current GoegraphicPoint is equals the goal point 
+				curr.addPointToCurrPath(curr.getCurrLocation()); //Add to the end of list (Current Path or current track) yourself GeographicPoint 
+				bfsOut = new ArrayList<GeographicPoint>(curr.getCurrPath() ); //Create the returned List (track)
+				//Set all the last PathList of MapNode to null
+				while (!q.isEmpty() ) {
 					curr = q.remove();
-					curr.setCurrPathNull();
-				}*/
-				return bfsOut;
+					curr.setCurrPathNull(); //Clear the Current Path list (current track)
+				}
+				return bfsOut; //return the created list (list of the best Path from start point to goal, best track)
 			}
-			//correspPointNode.get(curr).getEdgesList();//get EdgesList of current MapNode
-			for (MapEdge currEdge : curr.getEdgesList() ) {
-				currEnd = currEdge.getEnd();//get the end GeographicPoint of currEdge
-				currNode = correspPointNode.get(currEnd);//get the MapNode object correspond to the end GeographicPoint of currEdge
-				//System.out.println(currNode.getCurrLocation());
-				if (!visited.contains(currNode) ) {
-					currNode.addPointToCurrPath(curr.getCurrLocation());//Add the GeographicPoint of the parent MapNode to the Path list 
-					visited.add(currNode);
-					q.add(currNode);
-					temp ++;
-					System.out.println(currNode.getCurrPath() + "temp-" + temp);
+			for (MapEdge currEdge : curr.getEdgesList() ) { //Get the all Edges of current MapNode (vertex)
+				currEnd = currEdge.getEnd();//get the end GeographicPoint of currEdge (neighbor of current vertex adjacent by the current edge)
+				currNode = correspPointNode.get(currEnd);//get the MapNode object (vertex) correspond to the end GeographicPoint of currEdge
+				if (!visited.contains(currNode) ) { //Check the visited Set
+					currNode.setCurrPathNull(); //Clear the current Path of the neighbor (clear the track of current neighbor)
+					if (curr.getCurrPath() != null) { //Exception the NullPoint
+						currNode.addListToCurrPath(curr.getCurrPath() );//Add parent's current Path list (current track of parent) to the neighbor Path list (neighbor track)
+					}
+					currNode.addPointToCurrPath(curr.getCurrLocation() );//Add the GeographicPoint to the neighbor Path list (neighbor track)
+					visited.add(currNode); //Add the neighbor to the visited set
+					q.add(currNode); //enqueue the neighbor 
 				}
 			}
-			//curr.setCurrPathNull();
+			curr.setCurrPathNull(); //Clear Path list (current track) of current vertex (of dequeue vertex)
 		}
-		
-		
 		
 		// Hook for visualization.  See writeup.
 		//nodeSearched.accept(next.getLocation());
 
-		return null;
+		return null; //If the goal point isn't find return null
 	}
 	
 
@@ -276,7 +275,7 @@ public class MapGraph {
 		System.out.print("DONE. \nLoading the map...");
 		GraphLoader.loadRoadMap("data/testdata/simpletest.map", firstMap);
 		System.out.println(firstMap.getVertices());
-		for (MapNode temp : firstMap.verticies) {
+		for (MapNode temp : firstMap.vertices) {
 			System.out.println(temp.getEdges() );
 		}
 		//System.out.println( getNumVertices().toString() );
