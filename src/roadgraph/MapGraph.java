@@ -151,31 +151,46 @@ public class MapGraph {
 			 					     GeographicPoint goal, Consumer<GeographicPoint> nodeSearched)
 	{
 		// TODO: Implement this method in WEEK 2
-		List<GeographicPoint> bfsOut = new ArrayList<GeographicPoint>();
-		Set<GeographicPoint> visited = new HashSet<GeographicPoint>();
-		Queue<GeographicPoint> q = new LinkedList<GeographicPoint>();
-		GeographicPoint curr = start;
+		List<GeographicPoint> bfsOut;
+		//Set<GeographicPoint> visited = new HashSet<GeographicPoint>();
+		//Queue<GeographicPoint> q = new LinkedList<GeographicPoint>();
+		
+		Set<MapNode> visited = new HashSet<MapNode>();
+		Queue<MapNode> q = new LinkedList<MapNode>();
+		MapNode curr = correspPointNode.get(start);
+
 		GeographicPoint currEnd;
 		MapNode currNode;
 		
 		visited.add(curr);
 		q.add(curr);
+		int temp = 0;
 		
 		while (!q.isEmpty() ) {
 			curr = q.remove();
-			if (curr.equals(goal) ) {
+			if (curr.getCurrLocation().equals(goal) ) {
+				bfsOut = new ArrayList<GeographicPoint>(curr.getCurrPath() );
+				//Set all PathLists to null
+				/*while (!q.isEmpty() ) {
+					curr = q.remove();
+					curr.setCurrPathNull();
+				}*/
 				return bfsOut;
 			}
 			//correspPointNode.get(curr).getEdgesList();//get EdgesList of current MapNode
-			for (MapEdge currEdge : correspPointNode.get(curr).getEdgesList() ) {
+			for (MapEdge currEdge : curr.getEdgesList() ) {
 				currEnd = currEdge.getEnd();//get the end GeographicPoint of currEdge
-				if (!visited.contains(currEnd) ) {
-					currNode = correspPointNode.get(currEnd);//get the MapNode object correspond to the end GeographicPoint of currEdge
-					currNode.addPointToCurrPath(curr);//Add the parent MapNode to the Path list 
-					visited.add(currEnd);
-					q.add(currEnd);
+				currNode = correspPointNode.get(currEnd);//get the MapNode object correspond to the end GeographicPoint of currEdge
+				//System.out.println(currNode.getCurrLocation());
+				if (!visited.contains(currNode) ) {
+					currNode.addPointToCurrPath(curr.getCurrLocation());//Add the GeographicPoint of the parent MapNode to the Path list 
+					visited.add(currNode);
+					q.add(currNode);
+					temp ++;
+					System.out.println(currNode.getCurrPath() + "temp-" + temp);
 				}
 			}
+			//curr.setCurrPathNull();
 		}
 		
 		
