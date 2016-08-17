@@ -66,6 +66,7 @@ public class MapGraph {
 			setPoints.add(gPoint.getCurrLocation()); //by the loop get the MapNode object and get the CurrLocation. And add CurrLocation to the HashSet
 		}
 		return setPoints;
+		//return this.vertices.keySet();
 	}
 	
 	/**
@@ -98,6 +99,7 @@ public class MapGraph {
 		if (!correspPointNode.containsKey(location) && location != null) { //Check if this vertex is at graph and location isn't null
 			vertices.add(vertex); //Add the new created object MapNode to the ArrayList
 			correspPointNode.put(location, vertex); //Add the new created object MapNode to the HashMap
+			//nodes.put(location, new Node(location));
 			return true;
 		}
 				
