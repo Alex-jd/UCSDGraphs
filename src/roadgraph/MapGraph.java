@@ -243,11 +243,72 @@ public class MapGraph {
 										  GeographicPoint goal, Consumer<GeographicPoint> nodeSearched)
 	{
 		// TODO: Implement this method in WEEK 3
+		List<GeographicPoint> bfsOut; 					//Create the variable bfsOUt (returned track List)
+		Set<MapNode> visited = new HashSet<MapNode>(); 	//Create the HashMap visited
+		Queue<MapNode> q = new LinkedList<MapNode>(); 	//Create the queue
+		MapNode curr = correspPointNode.get(start); 	//Get the object MapNode corresponded start GeorgaphicPoing
+		
+		GeographicPoint currEnd;		 //Create the variable kind of GeographicPoint 
+		MapNode currNode;				 //Create the variable kind of MapNode
+		
+		visited.add(curr); 				//add to the visited set current MapNode
+		q.add(curr); 					//add to the queue current MapNode
+		
+		/*
+		Implement the BFS algorithm
+		dequeue the MapNode object from q
+		feature for search visualization
+		Check the current GoegraphicPoint is equals the goal point 
+		Add to the end of list (Current Path or current track) yourself GeographicPoint 
+		Create the returned List (track)
+		*/
+		while (!q.isEmpty() ) {
+			curr = q.remove(); 	
+			nodeSearched.accept(curr.getCurrLocation()); 
+			if (curr.getCurrLocation().equals(goal) ) { 	
+				curr.addPointToCurrPath(curr.getCurrLocation()); 	 
+				bfsOut = new ArrayList<GeographicPoint>(curr.getCurrPath() );
+				//Set all the last PathList of MapNode to null
+				while (!q.isEmpty() ) {
+					curr = q.remove();
+					curr.setCurrPathNull(); 	//Clear the Current Path list (current track)
+				}
+				return bfsOut; 	//return the created list (list of the best Path from start point to goal, best track)
+			}
+			/*
+			Get the all Edges of current MapNode (vertex)
+			get the end GeographicPoint of currEdge (neighbor of current vertex adjacent by the current edge)
+			get the MapNode object (vertex) correspond to the end GeographicPoint of currEdge
+			Check the visited Set
+			Clear the current Path of the neighbor (clear the track of current neighbor)
+			Exception the NullPoint
+			*/
+			for (MapEdge currEdge : curr.getEdgesList() ) { 
+				currEnd = currEdge.getEnd();//
+				currNode = correspPointNode.get(currEnd);
+				if (!visited.contains(currNode) ) { 
+					currNode.setCurrPathNull(); 
+					if (curr.getCurrPath() != null) { 	
+						currNode.addListToCurrPath(curr.getCurrPath() );	//Add parent's current Path list (current track of parent) to the neighbor Path list (neighbor track)
+					}
+					currNode.addPointToCurrPath(curr.getCurrLocation() );	//Add the GeographicPoint to the neighbor Path list (neighbor track)
+					visited.add(currNode); //Add the neighbor to the visited set. Add the distance!!!
+					currEdge.getDistance(); // Get the edge distance 
+					//http://www.java2s.com/Tutorial/Java/0140__Collections/UseaComparatortocreateaPriorityQueueformessages.htm
+					q.add(currNode); 				//enqueue the neighbor 
+				}
+			}
+			curr.setCurrPathNull(); 	//Clear Path list (current track) of current vertex (of dequeue vertex)
+		}
+		
+		// Hook for visualization.  See writeup.
+		//nodeSearched.accept(next.getLocation());
+
+		return null; 	//If the goal point isn't find return null
 
 		// Hook for visualization.  See writeup.
 		//nodeSearched.accept(next.getLocation());
-		
-		return null;
+
 	}
 
 	/** Find the path from start to goal using A-Star search
@@ -275,11 +336,71 @@ public class MapGraph {
 											 GeographicPoint goal, Consumer<GeographicPoint> nodeSearched)
 	{
 		// TODO: Implement this method in WEEK 3
+		List<GeographicPoint> bfsOut; 					//Create the variable bfsOUt (returned track List)
+		Set<MapNode> visited = new HashSet<MapNode>(); 	//Create the HashMap visited
+		Queue<MapNode> q = new LinkedList<MapNode>(); 	//Create the queue
+		MapNode curr = correspPointNode.get(start); 	//Get the object MapNode corresponded start GeorgaphicPoing
+		
+		GeographicPoint currEnd;		 //Create the variable kind of GeographicPoint 
+		MapNode currNode;				 //Create the variable kind of MapNode
+		
+		visited.add(curr); 				//add to the visited set current MapNode
+		q.add(curr); 					//add to the queue current MapNode
+		
+		/*
+		Implement the BFS algorithm
+		dequeue the MapNode object from q
+		feature for search visualization
+		Check the current GoegraphicPoint is equals the goal point 
+		Add to the end of list (Current Path or current track) yourself GeographicPoint 
+		Create the returned List (track)
+		*/
+		while (!q.isEmpty() ) {
+			curr = q.remove(); 	
+			nodeSearched.accept(curr.getCurrLocation()); 
+			if (curr.getCurrLocation().equals(goal) ) { 	
+				curr.addPointToCurrPath(curr.getCurrLocation()); 	 
+				bfsOut = new ArrayList<GeographicPoint>(curr.getCurrPath() );
+				//Set all the last PathList of MapNode to null
+				while (!q.isEmpty() ) {
+					curr = q.remove();
+					curr.setCurrPathNull(); 	//Clear the Current Path list (current track)
+				}
+				return bfsOut; 	//return the created list (list of the best Path from start point to goal, best track)
+			}
+			/*
+			Get the all Edges of current MapNode (vertex)
+			get the end GeographicPoint of currEdge (neighbor of current vertex adjacent by the current edge)
+			get the MapNode object (vertex) correspond to the end GeographicPoint of currEdge
+			Check the visited Set
+			Clear the current Path of the neighbor (clear the track of current neighbor)
+			Exception the NullPoint
+			*/
+			for (MapEdge currEdge : curr.getEdgesList() ) { 
+				currEnd = currEdge.getEnd();//
+				currNode = correspPointNode.get(currEnd);
+				if (!visited.contains(currNode) ) { 
+					currNode.setCurrPathNull(); 
+					if (curr.getCurrPath() != null) { 	
+						currNode.addListToCurrPath(curr.getCurrPath() );	//Add parent's current Path list (current track of parent) to the neighbor Path list (neighbor track)
+					}
+					currNode.addPointToCurrPath(curr.getCurrLocation() );	//Add the GeographicPoint to the neighbor Path list (neighbor track)
+					visited.add(currNode); 			//Add the neighbor to the visited set
+					q.add(currNode); 				//enqueue the neighbor 
+				}
+			}
+			curr.setCurrPathNull(); 	//Clear Path list (current track) of current vertex (of dequeue vertex)
+		}
+		
+		// Hook for visualization.  See writeup.
+		//nodeSearched.accept(next.getLocation());
+
+		return null; 	//If the goal point isn't find return null
 		
 		// Hook for visualization.  See writeup.
 		//nodeSearched.accept(next.getLocation());
 		
-		return null;
+
 	}
 
 	
