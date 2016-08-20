@@ -1,6 +1,7 @@
 package roadgraph;
 
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -8,15 +9,19 @@ import java.util.Set;
 import geography.GeographicPoint;
 
 
+
 //Class MapNode is the vertex contained the info about
 //own GeographicPiont - currentLocation
 //list of adjacency Edges - neighbors
 //current Track - currPath
-public class MapNode {
+public class MapNode implements Cloneable, Comparable<MapNode> {
+//public class MapNode implements Cloneable {
 	
 	private GeographicPoint currentLocation;
 	private List <MapEdge> neighbors;
 	private List<GeographicPoint> currPath;
+	private double distance;
+	private double priority;
 	
 	public MapNode() {
 		
@@ -26,12 +31,30 @@ public class MapNode {
 		this.currentLocation = location;
 		neighbors = new ArrayList<MapEdge>();
 		currPath = new ArrayList<GeographicPoint>();
+		priority = 0;
+		distance  = 0;
 	}
+	
+	 @Override
+	  public MapNode clone() {
+	    try {
+	      return (MapNode)super.clone();
+	    }
+	    catch( CloneNotSupportedException ex ) {
+	      throw new InternalError();
+	    }
+	  }    
 	
 	//get the own GeographicPoint
 	public GeographicPoint getCurrLocation() {
 		return currentLocation;
 	}
+	
+	public int compareTo(MapNode node2) {
+		if (this.getPriority() < node2.getPriority() ) return -1;
+		if (this.getPriority() > node2.getPriority() ) return 1;
+		return 0;
+	  }
 	
 	//add the Edge to the neighbor list
 	//@param from - the start GeographicPoint of this edge
@@ -87,5 +110,21 @@ public class MapNode {
 			setEdges.add(gPoint);
 		}
 		return setEdges;
+	}
+	
+	public void setPriority(double prior) {
+		this.priority = prior;
+	}
+	
+	public double getPriority() {
+		return this.priority;
+	}
+	
+	public void setDistance(double dist) {
+		this.priority = dist;
+	}
+	
+	public double getDistance() {
+		return this.distance;
 	}
 }
