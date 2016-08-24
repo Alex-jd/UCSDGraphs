@@ -262,8 +262,8 @@ public class MapGraph {
 		
 		// setup to begin BFS
 		HashMap<MapNode,MapNode> parentMap = new HashMap<MapNode,MapNode>();
-		//PriorityQueue<MapNode> toExplore = new PriorityQueue<MapNode>(1, new DistComparator() );//создаем класс DistComparator и не надо наследовать интерфейс Comparable
-		//в классе DistComparator описываем условия сравнения. 1 означает размер очереди (увеличивается автоматически по требованию системы)
+		//PriorityQueue<MapNode> toExplore = new PriorityQueue<MapNode>(1, new DistComparator() );//пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ DistComparator пїЅ пїЅпїЅ пїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ Comparable
+		//пїЅ пїЅпїЅпїЅпїЅпїЅпїЅ DistComparator пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ. 1 пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ (пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ)
 		PriorityQueue<MapNode> toExplore = new PriorityQueue<MapNode>();
 		HashSet<GeographicPoint> visited = new HashSet<GeographicPoint>();
 		startNode.setPriority(0.0);
@@ -283,15 +283,15 @@ public class MapGraph {
 				visited.add(next.getCurrLocation());
 				
 				if (next.getCurrLocation().equals(endNode.getCurrLocation()) ){
-					endNode = next;//так как меняется сам объект за счет создания клонов, поэтому приравниваем к новому объектку (так как реконструкция пути происходит 
-					//сравнивания объекты
+					endNode = next;//пїЅпїЅпїЅ пїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅ пїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ, пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅ пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ (пїЅпїЅпїЅ пїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ 
+					//пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ
 					break;
 				}
 				
 				MapEdge bestNeighbor = null;
 				for (MapEdge neighbor : next.getEdges()) {
 					neighborNode = correspPointNode.get(neighbor.getEnd());
-					if (!visited.contains(neighborNode.getCurrLocation() ) )  { //делаем, что значительно уменьшить кол-во рассматриваемых узлов
+					if (!visited.contains(neighborNode.getCurrLocation() ) )  { //пїЅпїЅпїЅпїЅпїЅпїЅ, пїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅ-пїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ
 						/*if (bestNeighbor == null || neighbor.getDistance() < bestNeighbor.getDistance() ) {
 							if (bestNeighbor != null) {
 								//System.out.println("curr neighbor dist " + neighbor.getDistance() + " bestNieghbor dist " + bestNeighbor.getDistance() );
@@ -299,10 +299,10 @@ public class MapGraph {
 							bestNeighbor = neighbor;
 						}*/
 						bestNeighbor = neighbor;
-						neighborNode = correspPointNode.get(bestNeighbor.getEnd()).clone();//необходим клон, так как могут быть похожие объекты, но с разным приоритетом. Это важно!!!!
-						neighborNode.setPriority(0);//обнуляем приоритет перед его прописыванием.
+						neighborNode = correspPointNode.get(bestNeighbor.getEnd()).clone();//пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅ, пїЅпїЅпїЅ пїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ, пїЅпїЅ пїЅ пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ. пїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ!!!!
+						neighborNode.setPriority(0);//пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ.
 						
-						neighborNode.setPriority(next.getPriority() + bestNeighbor.getDistance() );//устанавливаем приоритет. По сути это суммарный вес пути 
+						neighborNode.setPriority(next.getPriority() + bestNeighbor.getDistance() );//пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ. пїЅпїЅ пїЅпїЅпїЅпїЅ пїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅ пїЅпїЅпїЅпїЅ 
 						if (!toExplore.isEmpty() ) {
 							Iterator<MapNode> it = toExplore.iterator();
 							while (it.hasNext() ) {
