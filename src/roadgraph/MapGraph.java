@@ -262,8 +262,8 @@ public class MapGraph {
 		
 		// setup to begin BFS
 		HashMap<MapNode,MapNode> parentMap = new HashMap<MapNode,MapNode>();
-		PriorityQueue<MapNode> toExplore = new PriorityQueue<MapNode>(1, new DistComparator() );//������� ����� DistComparator � �� ���� ����������� ��������� Comparable
-		//� ������ DistComparator ��������� ������� ���������. 1 �������� ������ ������� (������������� ������������� �� ���������� �������)
+		PriorityQueue<MapNode> toExplore = new PriorityQueue<MapNode>(1, new DistComparator() );
+		
 		//PriorityQueue<MapNode> toExplore = new PriorityQueue<MapNode>();
 		HashSet<GeographicPoint> visited = new HashSet<GeographicPoint>();
 		startNode.setPriority(0.0);
@@ -277,21 +277,21 @@ public class MapGraph {
 			visitedCount++;
 			// hook for visualization
 			nodeSearched.accept(next.getCurrLocation() );
-			System.out.println("Dijkstra: location: " + next.getCurrLocation() + " priority: " + next.getPriority());
+			System.out.println("Dijkstra: location: " + next.getCurrLocation() + " priority: " + next.getPriority() );
 			
 			if (!visited.contains(next.getCurrLocation()) ) {
 				visited.add(next.getCurrLocation());
 				
 				if (next.getCurrLocation().equals(endNode.getCurrLocation()) ){
-					endNode = next;//��� ��� �������� ��� ������ �� ���� �������� ������, ������� ������������ � ������ �������� (��� ��� ������������� ���� ���������� 
-					//����������� �������
+					endNode = next; 
+					
 					break;
 				}
 				
 				MapEdge bestNeighbor = null;
 				for (MapEdge neighbor : next.getEdges()) {
 					neighborNode = correspPointNode.get(neighbor.getEnd());
-					if (!visited.contains(neighborNode.getCurrLocation() ) )  { //������, ��� ����������� ��������� ���-�� ��������������� �����
+					if (!visited.contains(neighborNode.getCurrLocation() ) )  { 
 						/*if (bestNeighbor == null || neighbor.getDistance() < bestNeighbor.getDistance() ) {
 							if (bestNeighbor != null) {
 								//System.out.println("curr neighbor dist " + neighbor.getDistance() + " bestNieghbor dist " + bestNeighbor.getDistance() );
@@ -299,15 +299,16 @@ public class MapGraph {
 							bestNeighbor = neighbor;
 						}*/
 						bestNeighbor = neighbor;
-						neighborNode = correspPointNode.get(bestNeighbor.getEnd()).clone();//��������� ����, ��� ��� ����� ���� ������� �������, �� � ������ �����������. ��� �����!!!!
-						neighborNode.setPriority(0);//�������� ��������� ����� ��� �������������.
+						neighborNode = correspPointNode.get(bestNeighbor.getEnd()).clone();
+						neighborNode.setPriority(0);
 						
-						neighborNode.setPriority(next.getPriority() + bestNeighbor.getDistance() + getSuperPriority(bestNeighbor) );
+						neighborNode.setPriority(next.getPriority() + getSuperPriority(bestNeighbor) );
+						//neighborNode.setPriority(next.getPriority() + bestNeighbor.getDistance()/10.0 + getSuperPriority(bestNeighbor) );
 						//neighborNode.setPriority(next.getPriority() + bestNeighbor.getDistance()  );
-						System.out.println("Destination " + neighbor.getDistance() );
+						System.out.println("Destination " + neighborNode.getDistance() );
 						System.out.println("SuperPriority : " + getSuperPriority(bestNeighbor) );
 						System.out.println("MaxSpeed : " + neighbor.getMaxSpeed());
-						//������������� ���������. �� ���� ��� ��������� ��� ���� 
+						 
 						if (!toExplore.isEmpty() ) {
 							Iterator<MapNode> it = toExplore.iterator();
 							while (it.hasNext() ) {
@@ -559,10 +560,10 @@ public class MapGraph {
 				for (MapEdge neighbor : next.getEdges()) {
 					neighborNode = correspPointNode.get(neighbor.getEnd());
 					if (!visited.contains(neighborNode.getCurrLocation())) {
-						/*if (bestNeighbor == null || neighbor.getDistance() < bestNeighbor.getDistance() ) {
+						if (bestNeighbor == null || neighbor.getDistance() < bestNeighbor.getDistance() ) {
 							bestNeighbor = neighbor;
-						}*/
-						bestNeighbor = neighbor;
+						}
+						//bestNeighbor = neighbor;
 						//System.out.println("edge distance " + bestNeighbor.getDistance());
 						neighborNode = correspPointNode.get(bestNeighbor.getEnd()).clone();
 						neighborNode.setPriority(0);
@@ -571,12 +572,18 @@ public class MapGraph {
 						double CrowFly = neighborNode.getCurrLocation().distance(endNode.getCurrLocation() );
 						//double CrowFly = getCrowFly(neighborNode.getCurrLocation(), endNode.getCurrLocation() );
 						//System.out.println("Summ priority " + (CrowFly + next.getPriority() ) );next.getPriority() + bestNeighbor.getDistance()
+						
+						//System.out.println("Destination : " + bestNeighbor.getDistance() );
 						neighborNode.setDistance(next.getDistance() + bestNeighbor.getDistance());
+						//System.out.println("Destination : " + neighborNode.getDistance() );
 						
 						//neighborNode.setPriority( neighborNode.getDistance() + CrowFly );
-						neighborNode.setPriority( neighborNode.getDistance()*100 + getHeuristic(neighborNode, endNode)*100 );
-						System.out.println("Destination : " + neighbor.getDistance()*100 );
-						System.out.println("Destination heuristic : " + getHeuristic(neighborNode, endNode)*100 );
+						neighborNode.setPriority( Math.log10(neighborNode.getDistance() ) + Math.log10(getHeuristic(neighborNode, endNode)*1000.0 ) + getSuperPriority(bestNeighbor)*10.0 );
+						//neighborNode.setPriority( neighborNode.getDistance()/1.0 + getHeuristic(neighborNode, endNode)*10000  );
+						//neighborNode.setPriority( getHeuristic(neighborNode, endNode)*100 + getSuperPriority(bestNeighbor) );
+						System.out.println("Destination : " + neighborNode.getDistance() );
+						System.out.println("Destination heuristic : " + getHeuristic(neighborNode, endNode)*10000 );
+						System.out.println("SuperPriority : " + getSuperPriority(bestNeighbor)*10 );
 						System.out.println("Priority : " + neighborNode.getPriority() );
 						//System.out.println("neighbor " + neighborNode.getCurrLocation() + " priority " + neighborNode.getPriority());
 						if (!toExplore.isEmpty() ) {

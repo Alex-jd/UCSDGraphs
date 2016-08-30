@@ -121,7 +121,7 @@ public class MapNode implements Cloneable {
 	}
 	
 	public void setDistance(double dist) {
-		this.priority = dist;
+		this.distance = dist;
 	}
 	
 	public double getDistance() {

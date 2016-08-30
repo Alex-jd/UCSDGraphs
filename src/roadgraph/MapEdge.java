@@ -38,7 +38,7 @@ public class MapEdge {
 		this.end = to;
 		this.streetName = roadName;
 		this.roadType = roadType;
-		this.distance = length;
+		this.distance = length*1000;
 		this.maxSpeed = currMaxSpeed();
 		
 	}
