@@ -262,9 +262,9 @@ public class MapGraph {
 		
 		// setup to begin BFS
 		HashMap<MapNode,MapNode> parentMap = new HashMap<MapNode,MapNode>();
-		//PriorityQueue<MapNode> toExplore = new PriorityQueue<MapNode>(1, new DistComparator() );//������� ����� DistComparator � �� ���� ����������� ��������� Comparable
+		PriorityQueue<MapNode> toExplore = new PriorityQueue<MapNode>(1, new DistComparator() );//������� ����� DistComparator � �� ���� ����������� ��������� Comparable
 		//� ������ DistComparator ��������� ������� ���������. 1 �������� ������ ������� (������������� ������������� �� ���������� �������)
-		PriorityQueue<MapNode> toExplore = new PriorityQueue<MapNode>();
+		//PriorityQueue<MapNode> toExplore = new PriorityQueue<MapNode>();
 		HashSet<GeographicPoint> visited = new HashSet<GeographicPoint>();
 		startNode.setPriority(0.0);
 		toExplore.add(startNode);
@@ -302,7 +302,12 @@ public class MapGraph {
 						neighborNode = correspPointNode.get(bestNeighbor.getEnd()).clone();//��������� ����, ��� ��� ����� ���� ������� �������, �� � ������ �����������. ��� �����!!!!
 						neighborNode.setPriority(0);//�������� ��������� ����� ��� �������������.
 						
-						neighborNode.setPriority(next.getPriority() + bestNeighbor.getDistance() );//������������� ���������. �� ���� ��� ��������� ��� ���� 
+						neighborNode.setPriority(next.getPriority() + bestNeighbor.getDistance() + getSuperPriority(bestNeighbor) );
+						//neighborNode.setPriority(next.getPriority() + bestNeighbor.getDistance()  );
+						System.out.println("Destination " + neighbor.getDistance() );
+						System.out.println("SuperPriority : " + getSuperPriority(bestNeighbor) );
+						System.out.println("MaxSpeed : " + neighbor.getMaxSpeed());
+						//������������� ���������. �� ���� ��� ��������� ��� ���� 
 						if (!toExplore.isEmpty() ) {
 							Iterator<MapNode> it = toExplore.iterator();
 							while (it.hasNext() ) {
@@ -435,6 +440,23 @@ public class MapGraph {
 	}
 */
 
+	private double getSuperPriority(MapEdge currEdge) {
+		int time = 0;
+		double accel = 1.0;
+		double startAccel = 0;
+		double maxSpeed = currEdge.getMaxSpeed();
+		double distance = currEdge.getDistance();
+		for (double i = 0; i <= (distance/2.0); ) {
+			if (startAccel <= maxSpeed) {
+				startAccel += accel;
+			}
+			i += startAccel;
+			time++;
+		}
+		return 2*time;
+	}
+	
+
 	private List<GeographicPoint> reconstructPath(HashMap<MapNode,MapNode> parentMap,
 					MapNode start, MapNode goal)
 	{
@@ -499,8 +521,8 @@ public class MapGraph {
 		
 		// setup to begin BFS
 		HashMap<MapNode,MapNode> parentMap = new HashMap<MapNode,MapNode>();
-		//PriorityQueue<MapNode> toExplore = new PriorityQueue<MapNode>(1, new DistComparator() );
-		PriorityQueue<MapNode> toExplore = new PriorityQueue<MapNode>();
+		PriorityQueue<MapNode> toExplore = new PriorityQueue<MapNode>(1, new DistComparator() );
+		//PriorityQueue<MapNode> toExplore = new PriorityQueue<MapNode>();
 		HashSet<GeographicPoint> visited = new HashSet<GeographicPoint>();
 		//HashSet<MapNode> visited = new HashSet<MapNode>();
 		startNode.setPriority(0.0);
@@ -552,8 +574,10 @@ public class MapGraph {
 						neighborNode.setDistance(next.getDistance() + bestNeighbor.getDistance());
 						
 						//neighborNode.setPriority( neighborNode.getDistance() + CrowFly );
-						neighborNode.setPriority( neighborNode.getDistance() + getHeuristic(neighborNode, endNode) );
-								
+						neighborNode.setPriority( neighborNode.getDistance()*100 + getHeuristic(neighborNode, endNode)*100 );
+						System.out.println("Destination : " + neighbor.getDistance()*100 );
+						System.out.println("Destination heuristic : " + getHeuristic(neighborNode, endNode)*100 );
+						System.out.println("Priority : " + neighborNode.getPriority() );
 						//System.out.println("neighbor " + neighborNode.getCurrLocation() + " priority " + neighborNode.getPriority());
 						if (!toExplore.isEmpty() ) {
 							Iterator<MapNode> it = toExplore.iterator();

@@ -14,8 +14,8 @@ import geography.GeographicPoint;
 //own GeographicPiont - currentLocation
 //list of adjacency Edges - neighbors
 //current Track - currPath
-public class MapNode implements Cloneable, Comparable<MapNode> {
-//public class MapNode implements Cloneable {
+//public class MapNode implements Cloneable, Comparable<MapNode> {
+public class MapNode implements Cloneable {
 	
 	private GeographicPoint currentLocation;
 	private List <MapEdge> neighbors;
