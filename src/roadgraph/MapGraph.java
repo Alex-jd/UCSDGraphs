@@ -569,18 +569,19 @@ public class MapGraph {
 						neighborNode.setPriority(0);
 						neighborNode.setDistance(0);
 						
-						double CrowFly = neighborNode.getCurrLocation().distance(endNode.getCurrLocation() );
+						double crowFly = neighborNode.getCurrLocation().distance(endNode.getCurrLocation() ) * 1000;
 						//double CrowFly = getCrowFly(neighborNode.getCurrLocation(), endNode.getCurrLocation() );
 						//System.out.println("Summ priority " + (CrowFly + next.getPriority() ) );next.getPriority() + bestNeighbor.getDistance()
-						
+						System.out.println("CrowFly: " + crowFly);
 						//System.out.println("Destination : " + bestNeighbor.getDistance() );
 						neighborNode.setDistance(next.getDistance() + bestNeighbor.getDistance());
 						//System.out.println("Destination : " + neighborNode.getDistance() );
 						
-						//neighborNode.setPriority( neighborNode.getDistance() + CrowFly );
-						neighborNode.setPriority( Math.log10(neighborNode.getDistance() ) + Math.log10(getHeuristic(neighborNode, endNode)*1000.0 ) + getSuperPriority(bestNeighbor)*10.0 );
+						neighborNode.setPriority( neighborNode.getDistance() + crowFly + getSuperPriority(bestNeighbor) );
+						//neighborNode.setPriority( Math.log10(neighborNode.getDistance() ) + Math.log10(getHeuristic(neighborNode, endNode)*1000.0 ) + getSuperPriority(bestNeighbor)*10.0 );
 						//neighborNode.setPriority( neighborNode.getDistance()/1.0 + getHeuristic(neighborNode, endNode)*10000  );
 						//neighborNode.setPriority( getHeuristic(neighborNode, endNode)*100 + getSuperPriority(bestNeighbor) );
+						
 						System.out.println("Destination : " + neighborNode.getDistance() );
 						System.out.println("Destination heuristic : " + getHeuristic(neighborNode, endNode)*10000 );
 						System.out.println("SuperPriority : " + getSuperPriority(bestNeighbor)*10 );
@@ -625,11 +626,11 @@ public class MapGraph {
 	
 	private double getHeuristic(MapNode current, MapNode end) {
 		double H = 
-				/*Math.pow( (Math.pow( (current.getCurrLocation().getX() - end.getCurrLocation().getX() ), 2) + 
+				Math.pow( (Math.pow( (current.getCurrLocation().getX() - end.getCurrLocation().getX() ), 2) + 
 						Math.pow( (current.getCurrLocation().getY() - end.getCurrLocation().getY() ), 2) )
-						, 1/2 );*/
-		(Math.abs(current.getCurrLocation().getX() - end.getCurrLocation().getX() ) + 
-				Math.abs(current.getCurrLocation().getY() - end.getCurrLocation().getY() ) );
+						, 1/2 );
+		/*(Math.abs(current.getCurrLocation().getX() - end.getCurrLocation().getX() ) + 
+				Math.abs(current.getCurrLocation().getY() - end.getCurrLocation().getY() ) );*/
 		return H;
 	}
 		
