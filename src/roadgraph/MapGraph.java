@@ -302,7 +302,9 @@ public class MapGraph {
 						neighborNode = correspPointNode.get(bestNeighbor.getEnd()).clone();
 						neighborNode.setPriority(0);
 						
-						neighborNode.setPriority(next.getPriority() + getSuperPriority(bestNeighbor) );
+						neighborNode.setDistance(next.getDistance() + bestNeighbor.getDistance() );
+						
+						neighborNode.setPriority(neighborNode.getDistance() + next.getPriority() + getSuperPriority(bestNeighbor) );
 						//neighborNode.setPriority(next.getPriority() + bestNeighbor.getDistance()/10.0 + getSuperPriority(bestNeighbor) );
 						//neighborNode.setPriority(next.getPriority() + bestNeighbor.getDistance()  );
 						System.out.println("Destination " + neighborNode.getDistance() );
